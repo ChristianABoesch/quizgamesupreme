@@ -1,0 +1,3 @@
+# Read this if you want to live
+
+Haha just kidding, but hey this is a new version of the quiz game I recently made a repo of, only better. At least I'm planning to make it better, I don't know how better I'll be able to actually make it as I'm writing all of this before I get started. All I have are vague ideas on what I'd like to see get done, and we'll see just how successful that is. But I do care about making this game more fun and interesting in the visual sense, because no game is entirely memorable from only its premise and working mechanics (maybe). Here's hoping the mechanics don't become altered with every scenic/aesthetic change. Fingers, freaking, crossed.
