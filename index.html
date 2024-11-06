@@ -6,7 +6,7 @@
     <title>Let's have a quiz</title>
     <style>
         body { 
-            font-family: Arial, sans-serif; 
+            font-family: monospace; 
             background: linear-gradient(to left, #0072ff, #00c6ff); /* Updated gradient to blue shades */
             display: flex; /* Use flexbox for centering */
             justify-content: center; /* Center horizontally */
@@ -24,6 +24,7 @@
             color: #e21616; /* Added reddish color to the title */
             text-align: center; /* Center the h1 text */
             margin: 20px 0; /* Add some margin for spacing */
+            font-family:Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
         }
         .banner {
             border: 2px solid #e21616; /* Add border to the banner */
@@ -62,6 +63,7 @@
             flex: 1;
             text-align: left;
             font-size: 18px;
+            font-family: monospace;
             margin: 0;
             word-wrap: break-word; /* Allow long words to be able to break and wrap onto the next line */
             overflow-wrap: break-word; /* Alternative property for word wrapping */
@@ -77,6 +79,7 @@
             justify-content: center; /* Center buttons in each row */
         }
         button {
+            font-family: monospace;
             width: 150px; /* Set a fixed width for buttons */
             height: 50px; /* Increase height of buttons */
             margin: 5px; /* Reduce margin around buttons */
@@ -85,24 +88,28 @@
 </head>
 <body>
     <div id="game">
-        <h1>THe Quiz Game</h1> <!-- Moved h1 outside of the banner -->
+        <h1>Christian's Boring Quiz</h1> <!-- Moved h1 outside of the banner -->
         <div class="banner">
-            <div id="question-container">
-                <div id="question-number"></div>
-                <p id="question"></p>
-            </div>
-            <div id="options">
-                <div class="button-row">
-                    <button id="option1"></button>
-                    <button id="option2"></button>
+            <p style="text-align: center;">Have you got the right amount of brain power to complete this quiz?? You probably do.<br>But keep in mind, this may not be that easy ...</p>
+            <button id="start-game" style="display: block; margin: 0 auto;">Start Game</button>
+            <div id="game-content" style="display: none;">
+                <div id="question-container">
+                    <div id="question-number"></div>
+                    <p id="question"><b id="question-text"></b></p>
                 </div>
-                <div class="button-row">
-                    <button id="option3"></button>
-                    <button id="option4"></button>
+                <div id="options">
+                    <div class="button-row">
+                        <button id="option1"></button>
+                        <button id="option2"></button>
+                    </div>
+                    <div class="button-row">
+                        <button id="option3"></button>
+                        <button id="option4"></button>
+                    </div>
                 </div>
+                <p id="result"></p>
+                <p id="counter">Attempts left: 3</p> <!-- Counter display -->
             </div>
-            <p id="result"></p>
-            <p id="counter">Attempts left: 3</p> <!-- Counter display -->
         </div> <!-- End of banner div -->
     </div>
 
@@ -127,22 +134,50 @@
             { question: "What do you call a computer built out of parts from multiple ships that crashed into a nearby forest?", options: ["Shipwreck PC", "Fleetwood Mac", "Boat Accident System", "You've just described my grandpa's computer!"], correct: 1 },
             { question: "What do you do with a sober sailor?", options: ["Go drinking", "Leave him alone", "Take him to a Rumpelschompkins concert", "Draw more whales on his face"], correct: 0 },
             { question: "Can I get a heck yeah?", options: ["Heck yeah!!!", "Heck ... yeah?", "[redacted]", "They don't have that, is Pepsi okay?"], correct: 3 },
-            { question: "Would you say that 'Bridge Over Troubled Water' is a work of art?", options: ["Yes", "No", "50%", "Folk music is for horses"], correct: 2 }
+            { question: "Would you say that 'Bridge Over Troubled Water' is a work of art?", options: ["Yes", "No", "50%", "Folk music is for horses"], correct: 2 },
+            { question: "Bonus question", options: ["Pick me", "Pick me", "Pick me", "Pick me"], correct: 0 }
         ];
 
         let currentQuestion = 0;
         let attemptsLeft = 3; // Counter for attempts
+        let timer; // Variable to store the timer
+
+        function startGame() {
+            document.getElementById("start-game").style.display = "none";
+            document.querySelector(".banner p").style.display = "none"; // Hide the text above the button
+            document.getElementById("game-content").style.display = "block";
+            askQuestion();
+        }
 
         function askQuestion() {
             if (currentQuestion < questions.length) {
                 document.getElementById("question-number").innerText = (currentQuestion + 1) + "."; // Update question number
-                document.getElementById("question").innerText = questions[currentQuestion].question;
+                document.getElementById("question-text").innerText = questions[currentQuestion].question;
                 document.getElementById("option1").innerText = questions[currentQuestion].options[0];
                 document.getElementById("option2").innerText = questions[currentQuestion].options[1];
                 document.getElementById("option3").innerText = questions[currentQuestion].options[2];
                 document.getElementById("option4").innerText = questions[currentQuestion].options[3];
                 document.getElementById("result").innerText = ""; // Clear previous result
                 document.getElementById("counter").innerText = "Attempts left: " + attemptsLeft; // Update counter display
+                
+                // Add timer for Question 10
+                if (currentQuestion === 9 && !timer) {
+                    let timeLeft = 10;
+                    const timerElement = document.createElement("p");
+                    timerElement.id = "timer";
+                    timerElement.innerText = `Time left: ${timeLeft} seconds`;
+                    document.getElementById("question-container").appendChild(timerElement);
+                    
+                    timer = setInterval(() => {
+                        timeLeft--;
+                        timerElement.innerText = `Time left: ${timeLeft} seconds`;
+                        if (timeLeft === 0) {
+                            clearInterval(timer);
+                            document.getElementById("result").innerText = "Game Over";
+                            disableButtons();
+                        }
+                    }, 1000);
+                }
             } else {
                 document.getElementById("result").innerText = "Okay that's it we're done, no more questions";
                 disableButtons(); // Disable buttons when game is over
@@ -163,6 +198,10 @@
                     correctSound.currentTime = 0; // Reset the audio to the beginning
                     correctSound.play();
                     currentQuestion++;
+                    if (currentQuestion === 10) {
+                        clearInterval(timer);
+                        document.getElementById("timer").remove();
+                    }
                     askQuestion();
                 }
             } else {
@@ -177,6 +216,10 @@
                     document.getElementById("result").innerText = "Game Over";
                     document.getElementById("counter").innerText = ""; // Clear counter display
                     disableButtons(); // Disable buttons when game is over
+                    if (currentQuestion === 9) {
+                        clearInterval(timer);
+                        document.getElementById("timer").remove();
+                    }
                 }
             }
         }
@@ -187,6 +230,8 @@
             document.getElementById("option3").disabled = true;
             document.getElementById("option4").disabled = true;
         }
+
+        document.getElementById("start-game").onclick = startGame;
 
         document.getElementById("option1").onclick = function() {
             checkAnswer(0);
