@@ -109,6 +109,7 @@
                 </div>
                 <p id="result"></p>
                 <p id="counter">Attempts left: 3</p> <!-- Counter display -->
+                <button id="play-again" style="display: none;">Play Again?</button>
             </div>
         </div> <!-- End of banner div -->
     </div>
@@ -129,7 +130,7 @@
             { question: "You've just hired an assassin. What's your next move?", options: ["Kill him", "Invite him for tea", "Order takeout", "Take him to a drag race"], correct: 2 },
             { question: "What do you do with a drunken sailor?", options: ["Draw whales on his face", "Feed him more rum", "Pat him on the back 'til he throws up", "Take away his ship"], correct: 0 },
             { question: "If a hot dog is not a sandwich, then what is it?", options: ["A burger", "A taco", "A hot dog", "A sandwich"], correct: 2 },
-            { question: "You'll find the answer in due time ...", options: ["I'm bored", "What does that mean?", "Pick me", "11:59pm"], correct: 3 },
+            { question: "You'll find the answer in due time.", options: ["I'm bored", "What does that mean?", "Pick me", "11:59pm"], correct: 3 },
             { question: "HOW MANY HRMPPPHS IN A MRMPPPH?", options: ["OMG", "I beg your pardon?", "As many as you want", "None"], correct: 3 },
             { question: "What do you call a computer built out of parts from multiple ships that crashed into a nearby forest?", options: ["Shipwreck PC", "Fleetwood Mac", "Boat Accident System", "You've just described my grandpa's computer!"], correct: 1 },
             { question: "What do you do with a sober sailor?", options: ["Go drinking", "Leave him alone", "Take him to a Rumpelschompkins concert", "Draw more whales on his face"], correct: 0 },
@@ -146,7 +147,30 @@
             document.getElementById("start-game").style.display = "none";
             document.querySelector(".banner p").style.display = "none"; // Hide the text above the button
             document.getElementById("game-content").style.display = "block";
+            document.getElementById("play-again").style.display = "none"; // Hide the "Play Again?" button
+            currentQuestion = 0;
+            attemptsLeft = 3;
+            enableButtons(); // Re-enable the buttons
+            document.getElementById("result").innerText = ""; // Clear previous result
+            document.getElementById("counter").innerText = "Attempts left: " + attemptsLeft; // Reset counter display
+            if (timer) {
+                clearInterval(timer);
+                timer = null;
+            }
+            if (document.getElementById("timer")) {
+                document.getElementById("timer").remove();
+            }
+            // Start playing background music
+            const backgroundMusic = document.getElementById("backgroundMusic");
+            backgroundMusic.play();
             askQuestion();
+        }
+
+        function enableButtons() {
+            document.getElementById("option1").disabled = false;
+            document.getElementById("option2").disabled = false;
+            document.getElementById("option3").disabled = false;
+            document.getElementById("option4").disabled = false;
         }
 
         function askQuestion() {
@@ -160,23 +184,38 @@
                 document.getElementById("result").innerText = ""; // Clear previous result
                 document.getElementById("counter").innerText = "Attempts left: " + attemptsLeft; // Update counter display
                 
-                // Add timer for Question 10
-                if (currentQuestion === 9 && !timer) {
-                    let timeLeft = 10;
-                    const timerElement = document.createElement("p");
-                    timerElement.id = "timer";
-                    timerElement.innerText = `Time left: ${timeLeft} seconds`;
-                    document.getElementById("question-container").appendChild(timerElement);
-                    
-                    timer = setInterval(() => {
-                        timeLeft--;
+                // Add timer for Questions 10, 15, and 20
+                if (currentQuestion === 9 || currentQuestion === 14 || currentQuestion === 19) {
+                    if (!timer) {
+                        let timeLeft = 10;
+                        const timerElement = document.createElement("p");
+                        timerElement.id = "timer";
+                        timerElement.style.fontSize = "7px"; // Add this line to make the timer text smaller
                         timerElement.innerText = `Time left: ${timeLeft} seconds`;
-                        if (timeLeft === 0) {
-                            clearInterval(timer);
-                            document.getElementById("result").innerText = "Game Over";
-                            disableButtons();
+                        document.getElementById("question-container").appendChild(timerElement);
+                        
+                        timer = setInterval(() => {
+                            timeLeft--;
+                            if (timeLeft >= 0) {
+                                timerElement.innerText = `Time left: ${timeLeft} seconds`;
+                            }
+                            if (timeLeft === 0) {
+                                clearInterval(timer);
+                                document.getElementById("result").innerText = "Time's up! Game Over";
+                                disableButtons();
+                                document.getElementById("play-again").style.display = "block";
+                            }
+                        }, 1000);
+                    }
+                } else {
+                    if (timer) {
+                        clearInterval(timer);
+                        const timerElement = document.getElementById("timer");
+                        if (timerElement) {
+                            timerElement.remove();
                         }
-                    }, 1000);
+                        timer = null;
+                    }
                 }
             } else {
                 document.getElementById("result").innerText = "Okay that's it we're done, no more questions";
@@ -193,15 +232,19 @@
                     gameCompletionSound.play();
                     document.getElementById("result").innerText = "Okay that's it we're done, no more questions";
                     disableButtons();
+                    if (timer) {
+                        clearInterval(timer);
+                        const timerElement = document.getElementById("timer");
+                        if (timerElement) {
+                            timerElement.remove();
+                        }
+                        timer = null;
+                    }
                 } else {
                     const correctSound = document.getElementById("correctSound");
                     correctSound.currentTime = 0; // Reset the audio to the beginning
                     correctSound.play();
                     currentQuestion++;
-                    if (currentQuestion === 10) {
-                        clearInterval(timer);
-                        document.getElementById("timer").remove();
-                    }
                     askQuestion();
                 }
             } else {
@@ -216,9 +259,15 @@
                     document.getElementById("result").innerText = "Game Over";
                     document.getElementById("counter").innerText = ""; // Clear counter display
                     disableButtons(); // Disable buttons when game is over
-                    if (currentQuestion === 9) {
+                    document.getElementById("play-again").style.display = "block"; // Show the "Play Again?" button
+                    // Only clear the timer if it's not a timed question
+                    if (timer && !(currentQuestion === 9 || currentQuestion === 14 || currentQuestion === 19)) {
                         clearInterval(timer);
-                        document.getElementById("timer").remove();
+                        const timerElement = document.getElementById("timer");
+                        if (timerElement) {
+                            timerElement.remove();
+                        }
+                        timer = null;
                     }
                 }
             }
@@ -229,9 +278,15 @@
             document.getElementById("option2").disabled = true;
             document.getElementById("option3").disabled = true;
             document.getElementById("option4").disabled = true;
+            document.getElementById("play-again").style.display = "block"; // Show the "Play Again?" button
+            // Stop playing background music
+            const backgroundMusic = document.getElementById("backgroundMusic");
+            backgroundMusic.pause();
+            backgroundMusic.currentTime = 0;
         }
 
         document.getElementById("start-game").onclick = startGame;
+        document.getElementById("play-again").onclick = startGame; // Add click event for "Play Again?" button
 
         document.getElementById("option1").onclick = function() {
             checkAnswer(0);
@@ -254,5 +309,6 @@
 <audio id="correctSound" src="audio/correctanswer.wav"></audio>
     <audio id="incorrectSound" src="audio/incorrectanswer.wav"></audio>
     <audio id="gameCompletionSound" src="audio/winjingle_basic.wav"></audio>
+    <audio id="backgroundMusic" src="audio/quizgamesupreme_musicloop.wav" loop></audio>
 </body>
 </html>
