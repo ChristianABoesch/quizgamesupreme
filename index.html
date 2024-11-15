@@ -39,6 +39,7 @@
             flex-direction: column; /* Stack child elements vertically */
             justify-content: flex-start; /* Align elements to the top */
             overflow: hidden; /* Hide overflow */
+            position: relative; /* Enable absolute positioning of children */
         }
         #question-container {
             display: flex;
@@ -91,7 +92,10 @@
         <h1>Christian's Boring Quiz</h1> <!-- Moved h1 outside of the banner -->
         <div class="banner">
             <p style="text-align: center;">Have you got the right amount of brain power to complete this quiz?? You probably do.<br>But keep in mind, this may not be that easy ...</p>
-            <button id="start-game" style="display: block; margin: 0 auto;">Start Game</button>
+            <div style="text-align: center;">
+                <button id="start-game" style="display: inline-block; margin: 0 10px;">Start Game</button>
+                <button id="toggle-music" style="position: absolute; bottom: 20px; right: 20px;">Music: On</button>
+            </div>
             <div id="game-content" style="display: none;">
                 <div id="question-container">
                     <div id="question-number"></div>
@@ -143,6 +147,19 @@
         let attemptsLeft = 3; // Counter for attempts
         let timer; // Variable to store the timer
 
+        let isMusicEnabled = true;
+
+        document.getElementById('toggle-music').addEventListener('click', function() {
+            const backgroundMusic = document.getElementById("backgroundMusic");
+            isMusicEnabled = !isMusicEnabled;
+            this.textContent = `Music: ${isMusicEnabled ? 'On' : 'Off'}`;
+            if (isMusicEnabled) {
+                backgroundMusic.play();
+            } else {
+                backgroundMusic.pause();
+            }
+        });
+
         function startGame() {
             document.getElementById("start-game").style.display = "none";
             document.querySelector(".banner p").style.display = "none"; // Hide the text above the button
@@ -160,9 +177,11 @@
             if (document.getElementById("timer")) {
                 document.getElementById("timer").remove();
             }
-            // Start playing background music
+            // Start playing background music if enabled
             const backgroundMusic = document.getElementById("backgroundMusic");
-            backgroundMusic.play();
+            if (isMusicEnabled) {
+                backgroundMusic.play();
+            }
             askQuestion();
         }
 
