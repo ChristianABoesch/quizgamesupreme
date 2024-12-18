@@ -1,53 +1,88 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Let's have another quiz</title>
     <style>
-        body { 
-            font-family: monospace; 
-            background: linear-gradient(to left, #09ff00, #118100); /* Updated gradient to blue shades */
-            display: flex; /* Use flexbox for centering */
-            justify-content: center; /* Center horizontally */
-            align-items: center; /* Center vertically */
-            height: 75vh; /* Full viewport height */
-            margin: 0; /* Remove default margin */
+        body {
+            font-family: monospace;
+            background: linear-gradient(to left, #09ff00, #118100);
+            /* Updated gradient to blue shades */
+            display: flex;
+            /* Use flexbox for centering */
+            justify-content: center;
+            /* Center horizontally */
+            align-items: center;
+            /* Center vertically */
+            height: 75vh;
+            /* Full viewport height */
+            margin: 0;
+            /* Remove default margin */
         }
-        #game { 
-            margin: 20px; 
-            text-align: center; /* Center text */
-            transform: scale(1.2); /* Scale up the entire game container */
-            transform-origin: center; /* Keep the scaling centered */
+
+        #game {
+            margin: 20px;
+            text-align: center;
+            /* Center text */
+            transform: scale(1.2);
+            /* Scale up the entire game container */
+            transform-origin: center;
+            /* Keep the scaling centered */
         }
+
         h1 {
-            color: #e21616; /* Added reddish color to the title */
-            text-align: center; /* Center the h1 text */
-            margin: 20px 0; /* Add some margin for spacing */
-            font-family:Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+            color: #e21616;
+            /* Added reddish color to the title */
+            text-align: center;
+            /* Center the h1 text */
+            margin: 20px 0;
+            /* Add some margin for spacing */
+            font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
         }
+
         .banner {
-            border: 2px solid #e21616; /* Add border to the banner */
-            padding: 20px; /* Add padding inside the banner */
-            border-radius: 10px; /* Rounded corners for the banner */
-            background-color: rgba(255, 255, 255, 0.8); /* Light background for contrast */
-            margin: 0 auto; /* Center the banner */
-            width: 600px; /* Set a fixed width for the banner */
-            height: 400px; /* Set a fixed height for the banner */
-            box-sizing: border-box; /* Include padding and border in the element's total width and height */
-            display: flex; /* Use flexbox for vertical layout */
-            flex-direction: column; /* Stack child elements vertically */
-            justify-content: flex-start; /* Align elements to the top */
-            overflow: hidden; /* Hide overflow */
-            position: relative; /* Enable absolute positioning of children */
+            border: 2px solid #e21616;
+            /* Add border to the banner */
+            padding: 20px;
+            /* Add padding inside the banner */
+            border-radius: 10px;
+            /* Rounded corners for the banner */
+            background-color: rgba(255, 255, 255, 0.8);
+            /* Light background for contrast */
+            margin: 0 auto;
+            /* Center the banner */
+            width: 600px;
+            /* Set a fixed width for the banner */
+            height: 400px;
+            /* Set a fixed height for the banner */
+            box-sizing: border-box;
+            /* Include padding and border in the element's total width and height */
+            display: flex;
+            /* Use flexbox for vertical layout */
+            flex-direction: column;
+            /* Stack child elements vertically */
+            justify-content: flex-start;
+            /* Align elements to the top */
+            overflow: hidden;
+            /* Hide overflow */
+            position: relative;
+            /* Enable absolute positioning of children */
         }
+
         #question-container {
             display: flex;
-            align-items: flex-start; /* Align items to the top */
-            flex: 0 0 auto; /* Don't allow container to grow, but keep its size */
-            overflow-y: auto; /* Add scrollbar if needed */
-            margin-bottom: 60px; /* Add a small margin at the bottom */
+            align-items: flex-start;
+            /* Align items to the top */
+            flex: 0 0 auto;
+            /* Don't allow container to grow, but keep its size */
+            overflow-y: auto;
+            /* Add scrollbar if needed */
+            margin-bottom: 60px;
+            /* Add a small margin at the bottom */
         }
+
         #question-number {
             width: 40px;
             height: 40px;
@@ -58,40 +93,55 @@
             justify-content: center;
             background-color: rgba(255, 255, 255, 0.8);
             margin-right: 15px;
-            flex-shrink: 0; /* Prevent shrinking */
+            flex-shrink: 0;
+            /* Prevent shrinking */
         }
+
         #question {
             flex: 1;
             text-align: left;
             font-size: 18px;
             font-family: monospace;
             margin: 0;
-            word-wrap: break-word; /* Allow long words to be able to break and wrap onto the next line */
-            overflow-wrap: break-word; /* Alternative property for word wrapping */
+            word-wrap: break-word;
+            /* Allow long words to be able to break and wrap onto the next line */
+            overflow-wrap: break-word;
+            /* Alternative property for word wrapping */
         }
+
         #options {
             display: flex;
             flex-direction: column;
             justify-content: center;
-            margin-top: -5px; /* Slightly reduced negative margin to bring options closer to the question */
+            margin-top: -5px;
+            /* Slightly reduced negative margin to bring options closer to the question */
         }
+
         .button-row {
-            display: flex; /* Use flexbox for button rows */
-            justify-content: center; /* Center buttons in each row */
+            display: flex;
+            /* Use flexbox for button rows */
+            justify-content: center;
+            /* Center buttons in each row */
         }
+
         button {
             font-family: monospace;
-            width: 150px; /* Set a fixed width for buttons */
-            height: 50px; /* Increase height of buttons */
-            margin: 5px; /* Reduce margin around buttons */
+            width: 150px;
+            /* Set a fixed width for buttons */
+            height: 50px;
+            /* Increase height of buttons */
+            margin: 5px;
+            /* Reduce margin around buttons */
         }
     </style>
 </head>
+
 <body>
     <div id="game">
         <h1>Christian's Boring Quiz 2</h1> <!-- Moved h1 outside of the banner -->
         <div class="banner">
-            <p style="text-align: center;">Think you've got enough brain power for another quiz?<br>You may just.<br>But do be warned, what you know about the last one may not help you here ...</p>
+            <p style="text-align: center;">Think you've got enough brain power for another quiz?<br>You may just.<br>But
+                do be warned, what you know about the last one may not help you here ...</p>
             <div style="text-align: center;">
                 <button id="start-game" style="display: inline-block; margin: 0 10px;">Start Game</button>
                 <button id="toggle-music" style="position: absolute; bottom: 20px; right: 20px;">Music: On</button>
@@ -120,17 +170,26 @@
 
     <script>
         const questions = [
-            { question: "Click the top left one.", options: ["Wut", "I don't understand", "Click me instead", "The top left one"], correct: 999 },
+            { question: "Click the top left.", options: ["Wut", "I don't understand", "Click me instead", "The top left"], correct: 999 },
             { question: "Ya got ketchup. Ya got mustard. Ya got mayo. Ya got chili sauce. Put em all together and whadaya get?", options: ["Kustayoli", "Maystetchili", "Chetstumali", "A whole lot to clean up"], correct: 3 },
             { question: "You've taken many a lick of the tootsie pop from the last quiz. But how many holes are in a tootsie pop?", options: ["None", "One", "Six", "As many as you want"], correct: 2 },
-            { question: "Why is a raven like a writing desk?", options: ["The color", "You can write stuff on it", "You shouldn't write on desks", "I don't care"], correct: 1 },
-            { question: "If you have a bowl of ten (10) grapes and you take away five (5), how many grapes do you have?", options: ["10", "5", "0", "-3.0782"], correct: 0 },
-            { question: "What do you call a sentient, narrow river?", options: ["A sentient narrow river", "The Water Man", "A livestream", "David"], correct: 2 },
-            { 
-    question: 'What do these rolls represent?<br><img src="images/synonymrolls.png" alt="Cinnamon rolls" style="max-width: 300px; height: auto; display: block; margin: 10px auto;">', 
-    options: ["Bread rolls", "Cinnamon rolls", "Synonym rolls", "Grammar rolls"], 
-    correct: 2 
-},
+            { question: "What do you call a clown with a bad diet?", options: ["Fatso the Clown!", "Even worse to look at", "Too skinny for a circus", "You just described me"], correct: 1 },
+            { question: "Everybody knows 2 comes after 1. But what comes after 2?", options: ["3", "?", "The aftermath of a big breakfast", "The letter ß"], correct: 2 },
+            { question: "Where in the world is Carmen Sandiego?", options: ["Here", "In your brain", "Some undisclosed place", "Still going through airport security"], correct: 3 },
+            {
+            question: (() => {
+                const img = document.createElement('img');
+                img.src = "images/synonymrolls.png";
+                img.alt = "Cinnamon rolls";
+                img.style.maxWidth = "300px";
+                img.style.height = "auto";
+                img.style.display = "block";
+                img.style.margin = "10px auto";
+                return img;
+            })(),
+            options: ["Bread rolls", "Cinnamon rolls", "Synonym rolls", "Grammar rolls"],
+            correct: 2
+            },
             { question: "What will give you infinite possibilites if you tilt your head to the side?", options: ["Nothing", "A math test", "Whiplash", "This question sucks"], correct: 999 },
             { question: "You know what they say ...", options: ["What goes around comes back around", "Don't bite the hand that feeds", "If you stare at the sun long enough, you get superpowers", "DO NOT LOOK INSIDE THE CLOSET"], correct: 2 },
             { question: "How do you make pigs fly?", options: ["Jetpacks", "Ask them nicely", "Throw em like a frisbee", "You don't"], correct: 1 },
@@ -153,7 +212,7 @@
 
         let isMusicEnabled = true;
 
-        document.getElementById('toggle-music').addEventListener('click', function() {
+        document.getElementById('toggle-music').addEventListener('click', function () {
             const backgroundMusic = document.getElementById("backgroundMusic");
             isMusicEnabled = !isMusicEnabled;
             this.textContent = `Music: ${isMusicEnabled ? 'On' : 'Off'}`;
@@ -201,11 +260,11 @@
                 document.getElementById("question-number").innerText = (currentQuestion + 1) + "."; // Update question number
                 const questionText = document.getElementById("question-text");
                 questionText.innerText = questions[currentQuestion].question;
-                
+
                 // Add click handler for first question and question 8
                 if (currentQuestion === 0) {
                     questionText.style.cursor = 'pointer';
-                    questionText.onclick = function() {
+                    questionText.onclick = function () {
                         currentQuestion++;
                         questionText.onclick = null;
                         questionText.style.cursor = 'default';
@@ -215,7 +274,7 @@
                     // Create a clickable circle for question 8
                     const questionNumber = document.getElementById("question-number");
                     questionNumber.innerHTML = '8. <span style="display: inline-block; width: 10px; height: 10px; border-radius: 50%; background-color: #ddd; cursor: pointer;" id="q8circle"></span>';
-                    document.getElementById("q8circle").onclick = function() {
+                    document.getElementById("q8circle").onclick = function () {
                         currentQuestion++;
                         this.onclick = null;
                         askQuestion();
@@ -227,7 +286,7 @@
                 document.getElementById("option4").innerText = questions[currentQuestion].options[3];
                 document.getElementById("result").innerText = ""; // Clear previous result
                 document.getElementById("counter").innerText = "Attempts left: " + attemptsLeft; // Update counter display
-                
+
                 // Add timer for Questions 10, 15, and 20
                 if (currentQuestion === 9 || currentQuestion === 14 || currentQuestion === 19) {
                     if (!timer) {
@@ -237,7 +296,7 @@
                         timerElement.style.fontSize = "7px"; // Add this line to make the timer text smaller
                         timerElement.innerText = `Time left: ${timeLeft} seconds`;
                         document.getElementById("question-container").appendChild(timerElement);
-                        
+
                         timer = setInterval(() => {
                             timeLeft--;
                             if (timeLeft >= 0) {
@@ -332,27 +391,28 @@
         document.getElementById("start-game").onclick = startGame;
         document.getElementById("play-again").onclick = startGame; // Add click event for "Play Again?" button
 
-        document.getElementById("option1").onclick = function() {
+        document.getElementById("option1").onclick = function () {
             checkAnswer(0);
         };
 
-        document.getElementById("option2").onclick = function() {
+        document.getElementById("option2").onclick = function () {
             checkAnswer(1);
         };
 
-        document.getElementById("option3").onclick = function() {
+        document.getElementById("option3").onclick = function () {
             checkAnswer(2);
         };
 
-        document.getElementById("option4").onclick = function() {
+        document.getElementById("option4").onclick = function () {
             checkAnswer(3);
         };
 
         askQuestion(); // Start the game
     </script>
-<audio id="correctSound" src="audio/correctanswer.wav"></audio>
+    <audio id="correctSound" src="audio/correctanswer.wav"></audio>
     <audio id="incorrectSound" src="audio/incorrectanswer.wav"></audio>
     <audio id="gameCompletionSound" src="audio/winjingle_basic.wav"></audio>
     <audio id="backgroundMusic" src="audio/quizgamesupreme_musicloop.wav" loop></audio>
 </body>
+
 </html>
